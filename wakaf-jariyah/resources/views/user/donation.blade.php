@@ -1,0 +1,146 @@
+@extends('adminlte::master')
+
+@section('title', 'Formulir Donasi')
+
+@section('adminlte_css')
+    <style>
+        .bg-custom {
+            background-color: #006A71 !important;
+            color: #fff;
+        }
+
+        /* Kelas khusus untuk validasi input yang tidak valid */
+        .is-invalid {
+            border-color: #dc3545;
+        }
+
+        .is-invalid ~ .invalid-feedback {
+            display: block;
+        }
+    </style>
+@endsection
+
+
+@section('body')
+<div class="content-wrapper" style="margin-left: 0">
+    <div class="content pt-4">
+        <div class="container">
+            <h1 class="mb-4">Formulir Donasi</h1>
+
+            {{-- Form Donasi --}}
+            <div class="card">
+                <div class="card-header bg-custom">
+                    <h3 class="card-title">Formulir Donasi</h3>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('order.store') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label>Nama</label>
+                            <input type="text" name="name" class="form-control" placeholder="Masukkan Nama" required>
+                            <div class="invalid-feedback">
+                                Bagian ini wajib diisi.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Jenis Kelamin</label>
+                            <select name="gender" class="form-control" placeholder="Masukkan Jenis Kelamin" required>
+                                <option value="">Pilih</option>
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Bagian ini wajib diisi.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">No. HP</label>
+                            <input type="text" name="phone" class="form-control" id="phone" placeholder="Masukkan No Hp" required
+                                pattern="^\+?[0-9]{10,15}$" 
+                                title="Nomor telepon tidak valid. Harap masukkan nomor telepon yang benar (minimal 10 digit, maksimal 15 digit)." />
+                            <div class="invalid-feedback">
+                                Bagian ini wajib diisi dan harus berupa nomor telepon yang valid.
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label>Item Donasi</label>
+                            <select name="item" id="item" class="form-control" required onchange="updateAmount()">
+                                <option value="">Pilih Item</option>
+                                <option value="1 Al Quran A5" data-priced="50000">1 Al Quran A5 (Rp. 50.000)</option>
+                                <option value="2 Al Quran A5" data-priced="100000">2 Al Quran A5 (Rp. 100.000)</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Bagian ini wajib diisi.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Jumlah (Rp)</label>
+                            <input type="text" id="amount" name="amount" class="form-control" readonly required>
+                        </div>
+
+                        <!-- <div class="form-group">
+                            <label>No Pembayaran</label>
+                            <input type="text" name="payment_no" class="form-control" required>
+                        </div> -->
+
+                        <div class="form-group">
+                            <label>Pesan</label>
+                            <textarea name="notes" rows="3" class="form-control" placeholder="Masukkan Pesan (optional)"></textarea>
+                        </div>
+
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-success">Kirim Donasi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('adminlte_js')
+@parent
+<script>
+    $(document).ready(function() {
+        // Fungsi untuk menangani validasi form ketika form disubmit
+        $('form').on('submit', function(event) {
+            var phoneInput = $('#phone'); // Mengambil elemen input nomor telepon
+
+            // Reset status invalid sebelum validasi
+            phoneInput.removeClass('is-invalid');
+
+            // Validasi jika input kosong atau format tidak sesuai dengan pola
+            if (!phoneInput[0].checkValidity()) {
+                phoneInput.addClass('is-invalid'); // Menambahkan kelas is-invalid jika tidak valid
+                event.preventDefault(); // Mencegah form disubmit jika ada error
+            }
+        });
+
+        // Untuk menangani validasi input secara langsung saat pengguna mengetik
+        $('#phone').on('input', function() {
+            var phoneInput = $(this);
+
+            // Jika input valid, hapus kelas is-invalid
+            if (phoneInput[0].checkValidity()) {
+                phoneInput.removeClass('is-invalid');
+            } else {
+                phoneInput.addClass('is-invalid');
+            }
+        });
+    });
+
+    function updateAmount() {
+        const itemSelect = document.getElementById('item');
+        const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+        const price = selectedOption.getAttribute('data-priced');
+        document.getElementById('amount').value = price ? price : '';
+    }
+</script>
+@endsection
