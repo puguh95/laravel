@@ -8,8 +8,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', function () {
+    return view('welcome'); //redirect to landing page
+});
+
 Route::get('/donation', [OrderController::class, 'index'])->name('order.index');
 Route::post('/donation', [OrderController::class, 'store'])->name('order.store');
+Route::get('/donation/transfer', function () {
+    return view('user.transfer');
+})->name('user.transfer');
 
 Auth::routes();
 

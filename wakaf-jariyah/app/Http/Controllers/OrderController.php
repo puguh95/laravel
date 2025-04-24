@@ -34,7 +34,9 @@ class OrderController extends Controller
             Order::create($validated);
 
             // Redirect back with a success message
-            return redirect()->back()->with('success', 'Donasi berhasil dikirim!');
+            // return redirect()->back()->with('success', 'Donasi berhasil dikirim!');
+            return redirect()->route('user.transfer')->with('success', 'Donasi berhasil terbuat!');
+
         } catch (\Exception $e) {
             // Handle any error that may occur during the creation
             return redirect()->back()->with('error', 'Terjadi kesalahan, coba lagi.');
@@ -42,21 +44,17 @@ class OrderController extends Controller
     }
 
     public function updateStatus(Order $order)
-{
-    if (!auth()->check()) {
-        abort(403, 'Unauthorized action.');
-    }
+    {
+        try {
+            $order->status = 'paid';
+            $order->checked_by = auth()->user()->name;
+            $order->save();
 
-    try {
-        $order->status = 'paid';
-        $order->checked_by = auth()->user()->name;
-        $order->save();
-
-        // Redirect back with a success message
-        return redirect()->back()->with('success', 'Status order berhasil diperbarui.');
-    } catch (\Exception $e) {
-        // Handle any error that may occur during the creation
-        return redirect()->back()->with('error', 'Terjadi kesalahan, coba lagi.');
+            // Redirect back with a success message
+            return redirect()->back()->with('success', 'Status order berhasil diperbarui.');
+        } catch (\Exception $e) {
+            // Handle any error that may occur during the creation
+            return redirect()->back()->with('error', 'Terjadi kesalahan, coba lagi.');
+        }
     }
-}
 }

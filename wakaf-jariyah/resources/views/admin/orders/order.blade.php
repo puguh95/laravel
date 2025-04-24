@@ -104,5 +104,41 @@
 
 @section('adminlte_js')
 @parent
-<script></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Handle form submission with AJAX
+        $('form').on('submit', function(event) {
+            event.preventDefault();  // Prevent default form submission
+
+            var form = $(this);  // Get the form element
+            var formData = form.serialize();  // Serialize form data
+
+            // Show confirmation before submitting
+            if (!confirm('Yakin ingin konfirmasi donasi ini?')) {
+                return;  // If user cancels, do nothing
+            }
+
+            // Send the form data using AJAX
+            $.ajax({
+                type: 'POST',
+                url: form.attr('action'),
+                data: formData,
+                success: function(response) {
+                    // Redirect or show a success message if needed
+                    window.location.reload();  // Reload the page to reflect changes
+                },
+                error: function(xhr) {
+                    // Check for error 419 (Session Expired)
+                    if (xhr.status === 419) {
+                        window.location.href = '/login';  // Redirect to login page
+                    } else {
+                        // Handle other errors
+                        alert('Terjadi kesalahan. Coba lagi.');
+                    }
+                }
+            });
+        });
+    });
+</script>
 @endsection

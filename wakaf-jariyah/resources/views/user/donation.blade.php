@@ -4,6 +4,20 @@
 
 @section('adminlte_css')
     <style>
+
+        .content-wrapper {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(3px);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            margin-left: 0 !important;
+            margin: 0;
+            min-height: 100vh;
+            background-image: url('https://berduflare.com/pattern/asanoha-400px.png');
+            background-repeat: repeat;
+            background-size: auto;
+        }
         .bg-custom {
             background-color: #006A71 !important;
             color: #fff;
