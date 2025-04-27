@@ -51,15 +51,18 @@
                         <table class="table table-bordered table-hover text-sm">
                             <thead class="thead-light">
                                 <tr>
-                                    <th>No Order</th>
+                                    <th>No</th>
                                     <th>Name</th>
                                     <th>Gender</th>
                                     <th>Phone</th>
                                     <th>Notes</th>
                                     <th>Item</th>
                                     <th>Amount</th>
-                                    <th>Payment No</th>
-                                    <th>Status</th>
+                                    <th>Reference No</th>
+                                    <th>Status Payment</th>
+                                    <th>Status Order</th>
+                                    <th>Created At</th>
+                                    <!-- <th>Checked At</th> -->
                                     <th>Checked By</th>
                                     <th>Action</th>
                                 </tr>
@@ -67,27 +70,36 @@
                             <tbody>
                                 @foreach ($orders as $order)
                                 <tr>
-                                    <td>{{ $order->id }}</td>
+                                    <td>{{ $order->order_id }}</td>
                                     <td>{{ $order->name }}</td>
                                     <td>{{ ucfirst($order->gender) }}</td>
                                     <td>{{ $order->phone }}</td>
                                     <td>{{ $order->notes }}</td>
                                     <td>{{ $order->item }}</td>
                                     <td>Rp {{ number_format($order->amount, 0, ',', '.') }}</td>
-                                    <td>{{ $order->payment_no }}</td>
+                                    <td>{{ $order->reference }}</td>
                                     <td>
-                                        <span class="badge {{ $order->status == 'paid' ? 'bg-success' : 'bg-secondary' }}">
+                                        <span class="badge {{ $order->status_id == '1' ? 'bg-success' : 'bg-secondary' }}">
+                                            {{ ucfirst($order->status_id) == '1' ? 'Success' : 'Pending' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge {{ $order->status == 'success' ? 'bg-success' : 'bg-secondary' }}">
                                             {{ ucfirst($order->status) }}
                                         </span>
                                     </td>
+                                    <td>{{ $order->created_at ? formatEpochFromTimestamp($order->created_at) : '-' }}</td>
+                                    <!-- <td>{{ $order->checked_at ? formatEpoch($order->checked_at) : '-' }}</td> -->
                                     <td>{{ $order->checked_by ?? '-' }}</td>
                                     <td>
-                                        @if ($order->status !== 'paid')
+                                        @if ($order->status === 'checking')
                                             <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('PUT')
-                                                <button type="submit" class="btn btn-sm btn-success mt-1">Mark as Paid</button>
+                                                <button type="submit" class="btn btn-sm btn-success mt-1">Check Donation</button>
                                             </form>
+                                        @else 
+                                        -
                                         @endif
                                     </td>
                                 </tr>
@@ -115,7 +127,7 @@
             var formData = form.serialize();  // Serialize form data
 
             // Show confirmation before submitting
-            if (!confirm('Yakin ingin konfirmasi donasi ini?')) {
+            if (!confirm('Yakin donasi ini selesai dicek?')) {
                 return;  // If user cancels, do nothing
             }
 

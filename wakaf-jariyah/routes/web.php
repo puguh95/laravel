@@ -21,7 +21,7 @@ Route::get('/donation/{uuid}', [OrderController::class, 'indexTransfer'])->name(
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
-    Route::get('/admin', [HomeController::class, 'index'])->name('home');
+    Route::get('/admin', [OrderController::class, 'indexAdmin'])->name('order.indexAdmin');
     Route::get('/admin/orders', [OrderController::class, 'indexAdmin'])->name('order.indexAdmin');
     Route::put('/admin/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 });

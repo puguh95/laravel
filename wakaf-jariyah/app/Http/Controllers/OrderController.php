@@ -8,9 +8,18 @@ use App\Models\Status;
 use App\API\DuitkuAPI;
 use Exception;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
+    function generateOrderNumber()
+    {
+        $today = Carbon::now()->format('Ymd');       // Format YYYYMMDD
+        $epoch = Carbon::now()->timestamp;            // Timestamp epoch (detik)
+
+        return "WKF-{$today}-{$epoch}";
+    }
+
     public function index()
     {
         /* $orders = Order::latest()->get(); */
@@ -54,8 +63,7 @@ class OrderController extends Controller
             $input = $request->all();
             $duitku = new DuitkuAPI();
             $uuid = md5(microtime());
-            $new_id = Order::latest()->first()->id + 1; 
-            $order_id = 'WKF-' . date('Ymd') . '-' . '';
+            $order_id = $this->generateOrderNumber();
 
             $payload = [
                 'paymentAmount' => (int)$input['amount'],
@@ -105,8 +113,9 @@ class OrderController extends Controller
     public function updateStatus(Order $order)
     {
         try {
-            $order->status = 'paid';
+            $order->status = 'success';
             $order->checked_by = auth()->user()->name;
+            $order->checked_at = time();
             $order->save();
 
             // Redirect back with a success message
@@ -130,15 +139,18 @@ class OrderController extends Controller
         // Map the API status code to the internal status.
         if ($result['statusCode'] == '00') {
             $status_id = 1; // 1 == Success
+            $status = 'checking';
         }
         if ($result['statusCode'] == '01') {
             $status_id = 2; // 2 == Pending
+            $status = 'pending';
         }
 
         Order::where('reference', $result['reference'])
             ->update([
                 'status_id' => $status_id,
                 'payment_url' => '',
+                'status' => $status,
             ]);
     }
 }
