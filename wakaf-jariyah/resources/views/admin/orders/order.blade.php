@@ -50,7 +50,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <input type="text" name="search" placeholder="Cari" value="{{ request('search') }}"
+                                <input type="text" name="search" placeholder="Cari berdasarkan no donasi, email, atau phone" value="{{ request('search') }}"
                                     class="form-control">
                                 <span class="input-group-btn">
                                     <button type="sumbit" class="btn btn-default" type="button">Search</button>
