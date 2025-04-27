@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Status;
 use App\API\DuitkuAPI;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Str;
 
@@ -54,8 +55,8 @@ class OrderController extends Controller
             $input = $request->all();
             $duitku = new DuitkuAPI();
             $uuid = md5(microtime());
-            $new_id = ''; 
-            $order_id = 'WKF-' . date('Ymd') . '-0000';
+            $new_id = Order::whereDate('created_at', Carbon::today())->count(); 
+            $order_id = 'WKF-' . date('Ymd') . '-' . Str::padLeft($new_id + 1, 4, 0);
 
             $payload = [
                 'paymentAmount' => (int)$input['amount'],

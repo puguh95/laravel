@@ -32,7 +32,26 @@
     <div class="content pt-4">
         <div class="container">
             <h1 class="mb-4">Daftar Donasi</h1>
-
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="input-group">
+                            <div style="width: 70px;">
+                                <select class="form-control">
+                                    <option value="10">10</option>
+                                    <option value="25" selected>25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Search...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">Search</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {{-- Tabel Donasi --}}
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -67,7 +86,7 @@
                             <tbody>
                                 @foreach ($orders as $order)
                                 <tr>
-                                    <td>{{ $order->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $order->name }}</td>
                                     <td>{{ ucfirst($order->gender) }}</td>
                                     <td>{{ $order->phone }}</td>
