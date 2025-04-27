@@ -25,8 +25,9 @@ return new class extends Migration
             $table->string('item');
             $table->bigInteger('amount');
             $table->string('payment_no')->nullable();
-            $table->enum('status', ['pending', 'paid'])->default('pending');
+            $table->enum('status', ['pending', 'checking', 'success'])->default('pending');
             $table->string('checked_by')->nullable();
+            $table->bigInteger('checked_at')->nullable();
             $table->string('payment_url');
             $table->string('payment_name');
             $table->timestamps();

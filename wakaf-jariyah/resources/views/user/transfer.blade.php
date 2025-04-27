@@ -114,7 +114,7 @@
                                 @if ($order->status_id == 1)
                                     <tr>
                                         <th>Setelah transfer, silakan kirim bukti transfer ke admin melalui WhatsApp.</th>
-                                        <th><a href="https://wa.me/{{ env('PHONE_NUMBER', '') }}?text=Halo%20admin,%20saya%20ingin%20memverifikasi%20pembayaran%20dengan%20ID:%20{{ $order->order_id }}" target="_blank" class="btn-whatsapp">WhatsApp</a></th>
+                                        <th><a href="https://wa.me/{{ env('WA_PHONE_NUMBER', '') }}?text=Halo%20admin,%20saya%20ingin%20memverifikasi%20pembayaran%20dengan%20Nomor Donasi:%20{{ $order->order_id }}" target="_blank" class="btn-whatsapp">WhatsApp</a></th>
                                     </tr>
                                 @elseif ($order->status_id == 2)
                                     <tr>

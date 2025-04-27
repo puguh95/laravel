@@ -12,7 +12,7 @@ class Order extends Model
         'notes', 'item', 'amount',
         'payment_no', 'status', 'checked_by',
         'order_id', 'payment_url', 'email',
-        'payment_name',
+        'payment_name', 'checked_at',
     ];
 
     public function status(){
