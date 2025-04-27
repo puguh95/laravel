@@ -54,8 +54,8 @@ class OrderController extends Controller
             $input = $request->all();
             $duitku = new DuitkuAPI();
             $uuid = md5(microtime());
-            $new_id = Order::latest()->first()->id + 1; 
-            $order_id = 'WKF-' . date('Ymd') . '-' . '';
+            $new_id = ''; 
+            $order_id = 'WKF-' . date('Ymd') . '-0000';
 
             $payload = [
                 'paymentAmount' => (int)$input['amount'],

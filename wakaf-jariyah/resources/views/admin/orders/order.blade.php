@@ -74,7 +74,7 @@
                                     <td>{{ $order->notes }}</td>
                                     <td>{{ $order->item }}</td>
                                     <td>Rp {{ number_format($order->amount, 0, ',', '.') }}</td>
-                                    <td>{{ $order->payment_no }}</td>
+                                    <td>{{ $order->order_id }}</td>
                                     <td>
                                         <span class="badge {{ $order->status == 'paid' ? 'bg-success' : 'bg-secondary' }}">
                                             {{ ucfirst($order->status) }}
