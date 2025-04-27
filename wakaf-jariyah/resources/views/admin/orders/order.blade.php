@@ -83,7 +83,7 @@
                                     <td>{{ $order->checked_by ?? '-' }}</td>
                                     <td>
                                         @if ($order->status !== 'paid')
-                                            <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin konfirmasi donasi ini?')">
+                                            <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('PUT')
                                                 <button type="submit" class="btn btn-sm btn-success mt-1">Mark as Paid</button>

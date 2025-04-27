@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,9 +15,8 @@ Route::get('/home', function () {
 
 Route::get('/donation', [OrderController::class, 'index'])->name('order.index');
 Route::post('/donation', [OrderController::class, 'store'])->name('order.store');
-Route::get('/donation/transfer', function () {
-    return view('user.transfer');
-})->name('user.transfer');
+Route::post('/donation/callback', [OrderController::class, 'handleCallback'])->name('order.callback');
+Route::get('/donation/{uuid}', [OrderController::class, 'indexTransfer'])->name('order.transfer');
 
 Auth::routes();
 

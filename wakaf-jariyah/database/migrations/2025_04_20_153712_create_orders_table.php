@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id(); // No Order
+            $table->string('uuid')->unique();
+            $table->foreignId('status_id')->nullable()->constrained('statuses')->nullOnDelete();
+            $table->string('reference');
+            $table->string('order_id', 50);
             $table->string('name');
+            $table->string('email');
             $table->enum('gender', ['L', 'P']);
             $table->string('phone');
             $table->text('notes')->nullable();
@@ -22,6 +27,8 @@ return new class extends Migration
             $table->string('payment_no')->nullable();
             $table->enum('status', ['pending', 'paid'])->default('pending');
             $table->string('checked_by')->nullable();
+            $table->string('payment_url');
+            $table->string('payment_name');
             $table->timestamps();
         });
     }

@@ -58,6 +58,14 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="Masukkan Email" required>
+                            <div class="invalid-feedback">
+                                Bagian ini wajib diisi.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label>Jenis Kelamin</label>
                             <select name="gender" class="form-control" placeholder="Masukkan Jenis Kelamin" required>
                                 <option value="">Pilih</option>
@@ -107,6 +115,20 @@
                             <label>Pesan</label>
                             <textarea name="notes" rows="3" class="form-control" placeholder="Masukkan Pesan (optional)"></textarea>
                         </div>
+                        
+                        <div class="form-group">
+                            <label>Metode Pembayaran</label>
+                            <input type="text" name="payment_name" id="payment_name" value="" class="d-none">
+                            <select name="payment_method" id="payment_method" class="form-control" required>
+                                <option value="" class="d-none">Pilih</option>
+                                @foreach ($payment_methods as $item)
+                                    <option value="{{ $item['paymentMethod'] }}">{{ $item['paymentName'] }}</option>                                 
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">
+                                Bagian ini wajib diisi.
+                            </div>
+                        </div>
 
                         <div class="text-right">
                             <button type="submit" class="btn btn-success">Kirim Donasi</button>
@@ -121,7 +143,7 @@
 
 @section('adminlte_js')
 @parent
-<script>
+<script> 
     $(document).ready(function() {
         // Fungsi untuk menangani validasi form ketika form disubmit
         $('form').on('submit', function(event) {
@@ -156,5 +178,11 @@
         const price = selectedOption.getAttribute('data-priced');
         document.getElementById('amount').value = price ? price : '';
     }
+
+    document.querySelector('#payment_method').addEventListener('change', (e) => {
+        let pm = document.querySelector('#payment_method');
+
+        document.querySelector('#payment_name').value = pm.options[pm.selectedIndex].text;
+    });
 </script>
 @endsection
