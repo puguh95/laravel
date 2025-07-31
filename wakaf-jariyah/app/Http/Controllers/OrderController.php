@@ -73,6 +73,7 @@ class OrderController extends Controller
             'phone' => 'required|string',
             'notes' => 'nullable|string',
             'item' => 'required|string',
+            'qty' => 'required|numeric|min:1',
             'amount' => 'required|numeric|min:1000',
             'payment_method' => 'required|string',
             'payment_name' => 'required|string',
@@ -82,6 +83,7 @@ class OrderController extends Controller
         $duitku = new DuitkuAPI();
         $uuid = md5(microtime());
         $order_id = $this->generateOrderNumber();
+        $item = $input['item'] . ' (' . $input['qty'] . ' pcs) ';
 
         $payload = [
             'paymentAmount' => (int)$input['amount'],
@@ -89,10 +91,10 @@ class OrderController extends Controller
             'merchantOrderId' => $order_id,
             'customerVaName' => $input['name'],
             'email' => $input['email'],
-            'productDetails' => 'Pembelian ' . $input['item'],
+            'productDetails' => 'Pembelian ' . $item,
             'itemDetails' => [
                 [
-                    'name' => $input['item'],
+                    'name' => $item,
                     'price' => $input['amount'],
                     'quantity' => 1,
                 ]
@@ -116,7 +118,8 @@ class OrderController extends Controller
             'uuid' => $uuid,
             'reference' => $result['reference'],
             'order_id' => $order_id,
-            'payment_url' => $result['paymentUrl']
+            'item' => $item,
+            'payment_url' => $result['paymentUrl'],
         ]);
 
         // Redirect back with a success message

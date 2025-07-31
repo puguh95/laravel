@@ -87,17 +87,31 @@
                             </div>
                         </div>
 
-
-
-                        <div class="form-group">
-                            <label>Item Donasi</label>
-                            <select name="item" id="item" class="form-control" required onchange="updateAmount()">
+                        <div class="form-row d-flex align-items-end">
+                            <div class="form-group col-md-10">
+                                <label for="item">Item Donasi</label>
+                                <select name="item" id="item" class="form-control" required onchange="updateAmount()">
                                 <option value="">Pilih Item</option>
-                                <option value="1 Al Quran A5" data-priced="50000">1 Al Quran A5 (Rp. 50.000)</option>
-                                <option value="2 Al Quran A5" data-priced="100000">2 Al Quran A5 (Rp. 100.000)</option>
-                            </select>
-                            <div class="invalid-feedback">
+                                <option value="Al-Quran Varian 1 (Rp. 25.000)" data-priced="25000">Al-Quran Varian 1 (Rp. 25.000)</option>
+                                <option value="Al-Quran Varian 2 (Rp. 50.000)" data-priced="50000">Al-Quran Varian 2 (Rp. 50.000)</option>
+                                <option value="Al-Quran Varian 3 (Rp. 75.000)" data-priced="75000">Al-Quran Varian 3 (Rp. 75.000)</option>
+                                </select>
+                                <div class="invalid-feedback">
                                 Bagian ini wajib diisi.
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                <label for="qty">Kuantitas</label>
+                                <input name="qty" id="qty" class="form-control" required type="number" min="1" step="1"
+                                    oninput="this.value = this.value.replace(/^0+/, '')"
+                                    onchange="updateAmount()"
+                                    placeholder="pcs" inputmode="numeric"
+                                    pattern="^[1-9][0-9]*$"
+                                    title="input hanya berbentuk angka" />
+                                <div class="invalid-feedback">
+                                Bagian ini wajib diisi dan harus berupa angka absolut.
+                                </div>
                             </div>
                         </div>
 
@@ -174,9 +188,10 @@
 
     function updateAmount() {
         const itemSelect = document.getElementById('item');
+        const qty = document.getElementById('qty').value;
         const selectedOption = itemSelect.options[itemSelect.selectedIndex];
         const price = selectedOption.getAttribute('data-priced');
-        document.getElementById('amount').value = price ? price : '';
+        document.getElementById('amount').value = qty ? price * qty : '';
     }
 
     document.querySelector('#payment_method').addEventListener('change', (e) => {
